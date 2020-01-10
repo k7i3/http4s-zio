@@ -2,6 +2,8 @@ val Http4sVersion = "0.21.0-M6"
 val CirceVersion = "0.12.3"
 val Specs2Version = "4.8.1"
 val LogbackVersion = "1.2.3"
+val ZioVersion = "1.0.0-RC17"
+val ZioInteropCatsVersion = "2.0.0.0-RC10"
 
 lazy val root = (project in file("."))
   .settings(
@@ -16,7 +18,9 @@ lazy val root = (project in file("."))
       "org.http4s"      %% "http4s-dsl"          % Http4sVersion,
       "io.circe"        %% "circe-generic"       % CirceVersion,
       "org.specs2"      %% "specs2-core"         % Specs2Version % "test",
-      "ch.qos.logback"  %  "logback-classic"     % LogbackVersion
+      "ch.qos.logback"  %  "logback-classic"     % LogbackVersion,
+      "dev.zio"         %% "zio"                 % ZioVersion,
+      "dev.zio"         %% "zio-interop-cats"    % ZioInteropCatsVersion
     ),
     addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.10.3"),
     addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.0")

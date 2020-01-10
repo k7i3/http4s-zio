@@ -1,4 +1,2 @@
-.gradle/
+target/
 build/
-.scalafmt.conf
-.idea

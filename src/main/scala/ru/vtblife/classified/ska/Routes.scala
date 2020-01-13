@@ -4,23 +4,27 @@ import cats.effect.Sync
 import cats.implicits._
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
+import ru.vtblife.classified.ska.external.{ServiceA, ServiceB}
+import ru.vtblife.classified.ska.model.FeedInfo
 
-object SkaRoutes {
+object Routes {
 
-  def jokeRoutes[F[_]: Sync](J: Jokes[F]): HttpRoutes[F] = {
+  def infoRoutes[F[_]: Sync](A: ServiceA[F], B: ServiceB[F]): HttpRoutes[F] = {
     val dsl = new Http4sDsl[F]{}
     import dsl._
     HttpRoutes.of[F] {
-      case GET -> Root / "joke" =>
+      case GET -> Root / "feeds" / id =>
         for {
-          joke <- J.get
-          resp <- Ok(joke)
+          aData <- A.get(id)
+          bData <- B.get(id)
+          feedInfo = FeedInfo(aData, bData)
+          resp <- Ok(feedInfo)
         } yield resp
     }
   }
 
   def helloWorldRoutes[F[_]: Sync](H: HelloWorld[F]): HttpRoutes[F] = {
-    val dsl = new Http4sDsl[F]{}
+    val dsl = Http4sDsl[F]
     import dsl._
     HttpRoutes.of[F] {
       case GET -> Root / "hello" / name =>

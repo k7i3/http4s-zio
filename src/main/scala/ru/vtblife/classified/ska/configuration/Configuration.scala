@@ -1,8 +1,8 @@
 package ru.vtblife.classified.ska.configuration
 
+import pureconfig.ConfigSource
 import zio.RIO
 import zio.Task
-import pureconfig.ConfigSource
 
 trait Configuration {
   val config: Configuration.Service[Any]
@@ -30,7 +30,9 @@ object Configuration {
     val config: Service[Any] = new Service[Any] {
 
       val load: Task[Config] =
-        Task.effectTotal(Config(ApiConfig("localhost", 8080), ServiceAConfig("a"), ServiceBConfig("b")))
+        Task.effectTotal(
+          Config(ApiConfig("0.0.0.0", 8080), ServiceAConfig("a"), ServiceBConfig("b"))
+        )
     }
   }
 

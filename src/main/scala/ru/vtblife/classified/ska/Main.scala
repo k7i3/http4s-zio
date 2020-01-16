@@ -1,6 +1,6 @@
 package ru.vtblife.classified.ska
 
-import ru.vtblife.classified.ska.configuration.Configuration
+import ru.vtblife.classified.ska.configuration.{Config, Configuration}
 import zio.interop.catz._
 import zio.interop.catz.implicits._
 import zio.Task
@@ -9,8 +9,8 @@ import zio.ZIO
 
 object Main extends CatsApp {
 
-  val app: ZIO[Any, Throwable, Unit] = for {
-    config <- configuration.loadConfig.provide(Configuration.Live)
+  val app: ZIO[Config, Throwable, Unit] = for {
+    config <- ZIO.environment[Config] // config <- configuration.loadConfig.provide(Configuration.Live)
     _ <- Services
       .client(config)
       .flatMap {
@@ -26,7 +26,7 @@ object Main extends CatsApp {
   } yield ()
 
   override def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
-    app.fold(_ => 1, _ => 0)
+    app.provideM(configuration.loadConfig.provide(Configuration.Live)).fold(_ => 1, _ => 0)
 //    cs.fold(_ => 1, _ => 0)
 //    Server.stream[Task].compile[Task, Task, Nothing].drain.fold(_ => 1, _ => 0)
 //    Server.stream[IO].compile.drain.as(ExitCode.Success)

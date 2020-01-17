@@ -1,28 +1,31 @@
-val Http4sVersion = "0.21.0-M6"
-val CirceVersion = "0.12.3"
-val Specs2Version = "4.8.1"
-val LogbackVersion = "1.2.3"
-val ZioVersion = "1.0.0-RC17"
+val Http4sVersion         = "0.21.0-M6"
+val CirceVersion          = "0.12.3"
+val Specs2Version         = "4.8.1"
+val LogbackVersion        = "1.2.3"
+val ZioVersion            = "1.0.0-RC17"
 val ZioInteropCatsVersion = "2.0.0.0-RC10"
-val PureConfigVersion = "0.12.2"
+val PureConfigVersion     = "0.12.2"
 
 lazy val root = (project in file("."))
+  .enablePlugins(Fs2Grpc)
   .settings(
     organization := "ru.vtblife.classified",
     name := "ska",
     version := "0.0.1-SNAPSHOT",
     scalaVersion := "2.13.1",
     libraryDependencies ++= Seq(
-      "org.http4s"            %% "http4s-blaze-server" % Http4sVersion,
-      "org.http4s"            %% "http4s-blaze-client" % Http4sVersion,
-      "org.http4s"            %% "http4s-circe"        % Http4sVersion,
-      "org.http4s"            %% "http4s-dsl"          % Http4sVersion,
-      "io.circe"              %% "circe-generic"       % CirceVersion,
-      "org.specs2"            %% "specs2-core"         % Specs2Version % "test",
-      "ch.qos.logback"        %  "logback-classic"     % LogbackVersion,
-      "dev.zio"               %% "zio"                 % ZioVersion,
-      "dev.zio"               %% "zio-interop-cats"    % ZioInteropCatsVersion,
-      "com.github.pureconfig" %% "pureconfig"          % PureConfigVersion
+      "org.http4s"            %% "http4s-blaze-server"            % Http4sVersion,
+      "org.http4s"            %% "http4s-blaze-client"            % Http4sVersion,
+      "org.http4s"            %% "http4s-circe"                   % Http4sVersion,
+      "org.http4s"            %% "http4s-dsl"                     % Http4sVersion,
+      "io.circe"              %% "circe-generic"                  % CirceVersion,
+      "org.specs2"            %% "specs2-core"                    % Specs2Version % "test",
+      "ch.qos.logback"        % "logback-classic"                 % LogbackVersion,
+      "dev.zio"               %% "zio"                            % ZioVersion,
+      "dev.zio"               %% "zio-interop-cats"               % ZioInteropCatsVersion,
+      "com.github.pureconfig" %% "pureconfig"                     % PureConfigVersion,
+      "io.grpc"               % "grpc-netty-shaded"               % scalapb.compiler.Version.grpcJavaVersion,
+      "io.netty"              % "netty-tcnative-boringssl-static" % "2.0.28.Final"
     ),
     addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.10.3"),
     addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.0")
@@ -30,9 +33,10 @@ lazy val root = (project in file("."))
 
 scalacOptions ++= Seq(
   "-deprecation",
-  "-encoding", "UTF-8",
+  "-encoding",
+  "UTF-8",
   "-language:higherKinds",
   "-language:postfixOps",
   "-feature",
-  "-Xfatal-warnings",
+  "-Xfatal-warnings"
 )

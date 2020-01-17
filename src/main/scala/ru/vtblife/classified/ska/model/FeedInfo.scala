@@ -6,9 +6,8 @@ import io.circe.generic.semiauto.deriveEncoder
 import org.http4s.EntityEncoder
 import org.http4s.circe.jsonEncoderOf
 import ru.vtblife.classified.ska.external.ServiceA.ServiceAData
-import ru.vtblife.classified.ska.external.ServiceB.ServiceBData
 
-final case class FeedInfo(a: ServiceAData, b: ServiceBData)
+final case class FeedInfo(a: ServiceAData, b: String)
 
 object FeedInfo {
   implicit val feedInfoEncoder: Encoder[FeedInfo] = deriveEncoder[FeedInfo]

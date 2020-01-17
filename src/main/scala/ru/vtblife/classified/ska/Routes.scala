@@ -18,7 +18,7 @@ object Routes {
         for {
           aData <- A.get(id)
           bData <- B.get(id)
-          feedInfo = FeedInfo(aData, bData)
+          feedInfo = FeedInfo(aData, bData.message)
           resp <- Ok(feedInfo)
         } yield resp
     }

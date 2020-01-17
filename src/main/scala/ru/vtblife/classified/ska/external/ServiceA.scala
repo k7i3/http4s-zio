@@ -1,15 +1,12 @@
 package ru.vtblife.classified.ska.external
 
 import cats.Applicative
-import cats.effect.Sync
+import cats.effect.{ConcurrentEffect, Sync}
 import cats.implicits._
-import io.circe.Decoder
-import io.circe.Encoder
+import io.circe.{Decoder, Encoder}
 import io.circe.generic.semiauto._
 import org.http4s.Method._
-import org.http4s.EntityDecoder
-import org.http4s.EntityEncoder
-import org.http4s.Uri
+import org.http4s.{EntityDecoder, EntityEncoder, Uri}
 import org.http4s.circe._
 import org.http4s.client.Client
 import org.http4s.client.dsl.Http4sClientDsl
@@ -35,13 +32,13 @@ object ServiceA {
 
   final case class ServiceAError(e: Throwable) extends RuntimeException
 
-  def impl[F[_]: Sync](config: ServiceAConfig)(C: Client[F]): ServiceA[F] = new ServiceA[F] {
-    val uri: Uri                = Uri.unsafeFromString(config.url)
+  def impl[F[_]: ConcurrentEffect : Sync](config: ServiceAConfig)(http: Client[F]): ServiceA[F] = new ServiceA[F] {
+    val uri: Uri                = Uri.unsafeFromString(config.http.url)
     val dsl: Http4sClientDsl[F] = new Http4sClientDsl[F] {}
     import dsl._
 
     def get(id: String): F[ServiceA.ServiceAData] =
-      C.expect[ServiceAData](GET(uri)) // uri"${config.url}"
+      http.expect[ServiceAData](GET(uri)) // uri"${config.url}"
         .adaptError { case t => ServiceAError(t) } // Prevent Client Json Decoding Failure Leaking
   }
 }

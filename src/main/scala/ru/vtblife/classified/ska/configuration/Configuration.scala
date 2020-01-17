@@ -31,7 +31,7 @@ object Configuration {
 
       val load: Task[Config] =
         Task.effectTotal(
-          Config(ApiConfig("0.0.0.0", 8080), ServiceAConfig("a"), ServiceBConfig("b"))
+          Config(ApiConfig("0.0.0.0", 8080), ServiceAConfig(HttpConfig("https://icanhazdadjoke.com/")), ServiceBConfig(GrpcConfig("0.0.0.0", 9002)))
         )
     }
   }

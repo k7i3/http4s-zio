@@ -9,8 +9,10 @@ package object configuration {
       serviceAConfig: ServiceAConfig,
       serviceBConfig: ServiceBConfig)
   case class ApiConfig(endpoint: String, port: Int)
-  case class ServiceAConfig(url: String)
-  case class ServiceBConfig(url: String)
+  case class HttpConfig(url: String)
+  case class GrpcConfig(name: String, port: Int)
+  case class ServiceAConfig(http: HttpConfig)
+  case class ServiceBConfig(grpc: GrpcConfig)
 
   def loadConfig: RIO[Configuration, Config] = RIO.accessM(_.config.load)
 }
